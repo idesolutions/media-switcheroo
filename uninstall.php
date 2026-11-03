@@ -1,6 +1,6 @@
 <?php
 /**
- * Remove the data Asset Swap stored on attachments when the plugin is deleted.
+ * Remove the data this plugin stored on attachments when it is deleted.
  *
  * @package AssetSwap
  */

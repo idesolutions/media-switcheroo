@@ -23,7 +23,7 @@ final class Cache_Manager {
 		clean_attachment_cache( $attachment_id );
 		wp_cache_delete( $attachment_id, 'posts' );
 		wp_cache_delete( $attachment_id, 'post_meta' );
-		$purged[] = __( 'WordPress attachment cache', 'asset-swap' );
+		$purged[] = __( 'WordPress attachment cache', 'ide-media-switcheroo' );
 
 		/**
 		 * Filters whether to flush the entire WordPress object cache after a replacement.
@@ -34,7 +34,7 @@ final class Cache_Manager {
 		if ( apply_filters( 'ides_asset_swap/flush_object_cache', false, $attachment_id ) && function_exists( 'wp_cache_flush' ) ) {
 			try {
 				if ( false !== wp_cache_flush() ) {
-					$purged[] = __( 'WordPress object cache', 'asset-swap' );
+					$purged[] = __( 'WordPress object cache', 'ide-media-switcheroo' );
 				}
 			} catch ( \Throwable $e ) {
 				$this->log_cache_error( 'WordPress object cache', $e );
@@ -128,7 +128,7 @@ final class Cache_Manager {
 
 	private function log_cache_error( string $label, \Throwable $e ): void {
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log( sprintf( 'Asset Swap cache purge failed for %s: %s', $label, $e->getMessage() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( sprintf( 'Media Switcheroo cache purge failed for %s: %s', $label, $e->getMessage() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 		}
 	}
 }

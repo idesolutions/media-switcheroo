@@ -1,4 +1,4 @@
-=== Asset Swap ===
+=== IDE Media Switcheroo ===
 Contributors: idesolutions
 Tags: media replace, replace image, replace pdf, media library, cache clear
 Requires at least: 6.8
@@ -12,7 +12,7 @@ Safely replace Media Library files in place, regenerate WordPress metadata and t
 
 == Description ==
 
-Asset Swap is a WordPress plugin for replacing files already stored in the Media Library without changing the attachment ID or existing media URL.
+IDE Media Switcheroo is a WordPress plugin for replacing files already stored in the Media Library without changing the attachment ID or existing media URL.
 
 It is designed for common maintenance tasks such as replacing an updated image, PDF, document, download, or other WordPress-supported attachment while keeping existing references intact.
 
@@ -41,9 +41,9 @@ Users who can upload files and edit the media item (or manage the site) can repl
 
 == Installation ==
 
-1. Upload the `asset-swap` folder to `/wp-content/plugins/` or install the ZIP through Plugins > Add New > Upload Plugin.
-2. Activate Asset Swap.
-3. Go to Media > Asset Swap or use the Replace File action for an existing Media Library item.
+1. Upload the `ide-media-switcheroo` folder to `/wp-content/plugins/` or install the ZIP through Plugins > Add New > Upload Plugin.
+2. Activate IDE Media Switcheroo.
+3. Go to Media > Media Switcheroo or use the Replace File action for an existing Media Library item.
 4. Select a replacement file with the same file extension.
 5. Select Replace Media.
 
@@ -51,7 +51,7 @@ Users who can upload files and edit the media item (or manage the site) can repl
 
 = Why must the replacement use the same extension? =
 
-Asset Swap keeps the existing Media Library URL. Requiring the same file extension prevents an existing .jpg URL from suddenly containing PDF data, or similar mismatches that can break browsers, servers, and existing links.
+This plugin keeps the existing Media Library URL. Requiring the same file extension prevents an existing .jpg URL from suddenly containing PDF data, or similar mismatches that can break browsers, servers, and existing links.
 
 = Will the attachment ID change? =
 
@@ -59,7 +59,7 @@ No. The existing WordPress attachment record is preserved.
 
 = Will my alt text, title, caption, and description stay? =
 
-Yes. Asset Swap changes the underlying file, not the attachment's editorial information.
+Yes. The plugin changes the underlying file, not the attachment's editorial information.
 
 = Are image thumbnails regenerated? =
 
@@ -67,19 +67,19 @@ Yes. WordPress attachment metadata and registered image sizes are regenerated af
 
 = Does it clear caches? =
 
-Yes. Asset Swap clears the cached data WordPress holds for the replaced file and attempts to purge supported page-cache, hosting, optimization, and builder caches that are detected on the site. It does not flush your whole object cache unless you ask it to. Developers can use the `ides_asset_swap/cache/purge` action to integrate additional cache systems, or return true from the `ides_asset_swap/flush_object_cache` filter to also flush the entire object cache.
+Yes. The plugin clears the cached data WordPress holds for the replaced file and attempts to purge supported page-cache, hosting, optimization, and builder caches that are detected on the site. It does not flush your whole object cache unless you ask it to. Developers can use the `ides_asset_swap/cache/purge` action to integrate additional cache systems, or return true from the `ides_asset_swap/flush_object_cache` filter to also flush the entire object cache.
 
-= Why does Asset Swap add a query string to replaced images? =
+= Why does the plugin add a query string to replaced images? =
 
 The replacement keeps the same URL, which can cause browsers and CDNs to continue showing a cached copy of the old file. A replacement version is appended to media URLs on the public site so a new replacement produces a new cache key. It is not added in the admin or in the editor, so it is never saved into your posts.
 
 = Can I replace SVG files? =
 
-Only if your site already allows SVG uploads. Asset Swap then checks the replacement before installing it and rejects SVG files that contain scripts, embedded HTML, event handlers, or references to anything outside the file (external images, links, stylesheets, or imports).
+Only if your site already allows SVG uploads. The plugin then checks the replacement before installing it and rejects SVG files that contain scripts, embedded HTML, event handlers, or references to anything outside the file (external images, links, stylesheets, or imports).
 
 = Does it send any data anywhere? =
 
-No. Asset Swap makes no external requests and does not track anything.
+No. The plugin makes no external requests and does not track anything.
 
 = What does it do when the plugin is deleted? =
 
@@ -87,7 +87,7 @@ It removes the replacement version, date, and user values it stored on media ite
 
 == Screenshots ==
 
-1. Asset Swap dashboard and media selector.
+1. Media Switcheroo screen and media selector.
 2. Current media and replacement-file interface.
 3. Replace File action in the Media Library.
 4. Replace Media File option in Attachment Details.

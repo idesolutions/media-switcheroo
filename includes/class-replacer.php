@@ -24,13 +24,13 @@ final class Replacer {
 	 */
 	public function replace( int $attachment_id, array $upload ) {
 		if ( 'attachment' !== get_post_type( $attachment_id ) ) {
-			return new \WP_Error( 'asset_swap_invalid_attachment', __( 'The selected item is not a Media Library attachment.', 'asset-swap' ) );
+			return new \WP_Error( 'asset_swap_invalid_attachment', __( 'The selected item is not a Media Library attachment.', 'ide-media-switcheroo' ) );
 		}
 
 		$target        = get_attached_file( $attachment_id, true );
 		$attached_path = is_string( $target ) ? $target : '';
 		if ( ! is_string( $target ) || '' === $target || ! is_file( $target ) ) {
-			return new \WP_Error( 'asset_swap_missing_file', __( 'The existing media file could not be found on the server.', 'asset-swap' ) );
+			return new \WP_Error( 'asset_swap_missing_file', __( 'The existing media file could not be found on the server.', 'ide-media-switcheroo' ) );
 		}
 
 		// Normalised for the checks and file operations below only. WordPress itself must be given the path exactly as it
@@ -38,15 +38,15 @@ final class Replacer {
 		// then store an absolute path instead of the usual relative one and lose track of the file.
 		$target = wp_normalize_path( $target );
 		if ( is_link( $target ) ) {
-			return new \WP_Error( 'asset_swap_symlink_target', __( 'Asset Swap will not replace a symlinked media file.', 'asset-swap' ) );
+			return new \WP_Error( 'asset_swap_symlink_target', __( 'This plugin will not replace a symlinked media file.', 'ide-media-switcheroo' ) );
 		}
 
 		if ( ! $this->is_safe_upload_path( $target ) ) {
-			return new \WP_Error( 'asset_swap_unsafe_path', __( 'The attachment file is outside the WordPress uploads directory and cannot be replaced safely.', 'asset-swap' ) );
+			return new \WP_Error( 'asset_swap_unsafe_path', __( 'The attachment file is outside the WordPress uploads directory and cannot be replaced safely.', 'ide-media-switcheroo' ) );
 		}
 
 		if ( ! is_writable( $target ) || ! is_writable( dirname( $target ) ) ) {
-			return new \WP_Error( 'asset_swap_not_writable', __( 'WordPress does not have permission to replace this media file.', 'asset-swap' ) );
+			return new \WP_Error( 'asset_swap_not_writable', __( 'WordPress does not have permission to replace this media file.', 'ide-media-switcheroo' ) );
 		}
 
 		$upload_error = isset( $upload['error'] ) ? (int) $upload['error'] : UPLOAD_ERR_NO_FILE;
@@ -58,15 +58,15 @@ final class Replacer {
 		}
 
 		if ( '' === $tmp_name || '' === $upload_name || ! is_uploaded_file( $tmp_name ) ) {
-			return new \WP_Error( 'asset_swap_invalid_upload', __( 'No valid replacement file was uploaded.', 'asset-swap' ) );
+			return new \WP_Error( 'asset_swap_invalid_upload', __( 'No valid replacement file was uploaded.', 'ide-media-switcheroo' ) );
 		}
 
 		$actual_size = @filesize( $tmp_name );
 		if ( false === $actual_size || $actual_size < 1 ) {
-			return new \WP_Error( 'asset_swap_empty_upload', __( 'The replacement file is empty or could not be read.', 'asset-swap' ) );
+			return new \WP_Error( 'asset_swap_empty_upload', __( 'The replacement file is empty or could not be read.', 'ide-media-switcheroo' ) );
 		}
 		if ( $actual_size > wp_max_upload_size() ) {
-			return new \WP_Error( 'asset_swap_file_too_large', __( 'The replacement file exceeds the maximum upload size allowed by this site.', 'asset-swap' ) );
+			return new \WP_Error( 'asset_swap_file_too_large', __( 'The replacement file exceeds the maximum upload size allowed by this site.', 'ide-media-switcheroo' ) );
 		}
 
 		$allowed_mimes = get_allowed_mime_types();
@@ -77,7 +77,7 @@ final class Replacer {
 		$old_type      = sanitize_mime_type( (string) get_post_mime_type( $attachment_id ) );
 
 		if ( ! $new_ext || ! $new_type ) {
-			return new \WP_Error( 'asset_swap_disallowed_type', __( 'WordPress does not allow this replacement file type.', 'asset-swap' ) );
+			return new \WP_Error( 'asset_swap_disallowed_type', __( 'WordPress does not allow this replacement file type.', 'ide-media-switcheroo' ) );
 		}
 
 		if ( $new_ext !== $old_ext ) {
@@ -85,7 +85,7 @@ final class Replacer {
 				'asset_swap_extension_mismatch',
 				sprintf(
 					/* translators: 1: existing extension, 2: replacement extension. */
-					__( 'To preserve the existing media URL, the replacement must use the same file extension. Existing: %1$s. Replacement: %2$s.', 'asset-swap' ),
+					__( 'To preserve the existing media URL, the replacement must use the same file extension. Existing: %1$s. Replacement: %2$s.', 'ide-media-switcheroo' ),
 					strtoupper( $old_ext ),
 					strtoupper( $new_ext )
 				)
@@ -93,15 +93,15 @@ final class Replacer {
 		}
 
 		if ( $old_type && $this->mime_family( $old_type ) !== $this->mime_family( $new_type ) ) {
-			return new \WP_Error( 'asset_swap_mime_mismatch', __( 'The replacement file type does not match the existing attachment type.', 'asset-swap' ) );
+			return new \WP_Error( 'asset_swap_mime_mismatch', __( 'The replacement file type does not match the existing attachment type.', 'ide-media-switcheroo' ) );
 		}
 
 		if ( 'image/svg+xml' === $new_type ) {
 			if ( ! $this->valid_svg( $tmp_name ) ) {
-				return new \WP_Error( 'asset_swap_invalid_svg', __( 'The uploaded SVG could not be validated as a safe SVG document.', 'asset-swap' ) );
+				return new \WP_Error( 'asset_swap_invalid_svg', __( 'The uploaded SVG could not be validated as a safe SVG document.', 'ide-media-switcheroo' ) );
 			}
 		} elseif ( str_starts_with( $new_type, 'image/' ) && ! $this->valid_image( $tmp_name ) ) {
-			return new \WP_Error( 'asset_swap_invalid_image', __( 'The uploaded image could not be validated.', 'asset-swap' ) );
+			return new \WP_Error( 'asset_swap_invalid_image', __( 'The uploaded image could not be validated.', 'ide-media-switcheroo' ) );
 		}
 
 		$old_metadata  = wp_get_attachment_metadata( $attachment_id );
@@ -113,21 +113,21 @@ final class Replacer {
 			if ( $backup && is_file( $backup ) ) {
 				wp_delete_file( $backup );
 			}
-			return new \WP_Error( 'asset_swap_backup_failed', __( 'Asset Swap could not create a temporary backup of the existing file.', 'asset-swap' ) );
+			return new \WP_Error( 'asset_swap_backup_failed', __( 'The plugin could not create a temporary backup of the existing file.', 'ide-media-switcheroo' ) );
 		}
 		@chmod( $backup, 0600 );
 
 		$stage = @tempnam( dirname( $target ), '.asset-swap-' );
 		if ( ! $stage ) {
 			wp_delete_file( $backup );
-			return new \WP_Error( 'asset_swap_stage_failed', __( 'Asset Swap could not prepare a secure temporary replacement file.', 'asset-swap' ) );
+			return new \WP_Error( 'asset_swap_stage_failed', __( 'The plugin could not prepare a secure temporary replacement file.', 'ide-media-switcheroo' ) );
 		}
 		$stage = wp_normalize_path( $stage );
 
 		if ( ! @copy( $tmp_name, $stage ) ) {
 			wp_delete_file( $stage );
 			wp_delete_file( $backup );
-			return new \WP_Error( 'asset_swap_copy_failed', __( 'The replacement file could not be staged for installation.', 'asset-swap' ) );
+			return new \WP_Error( 'asset_swap_copy_failed', __( 'The replacement file could not be staged for installation.', 'ide-media-switcheroo' ) );
 		}
 
 		if ( $old_permissions ) {
@@ -139,7 +139,7 @@ final class Replacer {
 		if ( ! $this->install_staged_file( $stage, $target, $backup ) ) {
 			wp_delete_file( $stage );
 			wp_delete_file( $backup );
-			return new \WP_Error( 'asset_swap_install_failed', __( 'The replacement file could not be installed. The original file was restored.', 'asset-swap' ) );
+			return new \WP_Error( 'asset_swap_install_failed', __( 'The replacement file could not be installed. The original file was restored.', 'ide-media-switcheroo' ) );
 		}
 
 		$post_update = wp_update_post(
@@ -175,13 +175,13 @@ final class Replacer {
 
 		if ( 'image/svg+xml' !== $new_type && str_starts_with( $new_type, 'image/' ) && empty( $new_metadata ) ) {
 			$this->rollback( $attachment_id, $backup, $target, $old_type, $old_metadata );
-			return new \WP_Error( 'asset_swap_metadata_failed', __( 'WordPress could not regenerate image metadata. The original file was restored.', 'asset-swap' ) );
+			return new \WP_Error( 'asset_swap_metadata_failed', __( 'WordPress could not regenerate image metadata. The original file was restored.', 'ide-media-switcheroo' ) );
 		}
 
 		$metadata_updated = wp_update_attachment_metadata( $attachment_id, $new_metadata );
 		if ( false === $metadata_updated && wp_get_attachment_metadata( $attachment_id ) !== $new_metadata ) {
 			$this->rollback( $attachment_id, $backup, $target, $old_type, $old_metadata );
-			return new \WP_Error( 'asset_swap_metadata_failed', __( 'WordPress could not save the replacement media metadata. The original file was restored.', 'asset-swap' ) );
+			return new \WP_Error( 'asset_swap_metadata_failed', __( 'WordPress could not save the replacement media metadata. The original file was restored.', 'ide-media-switcheroo' ) );
 		}
 
 		$this->delete_stale_derivatives( $target, $old_metadata, $new_metadata );
@@ -328,19 +328,19 @@ final class Replacer {
 		switch ( $error ) {
 			case UPLOAD_ERR_INI_SIZE:
 			case UPLOAD_ERR_FORM_SIZE:
-				return __( 'The replacement file exceeds the upload size allowed by this server.', 'asset-swap' );
+				return __( 'The replacement file exceeds the upload size allowed by this server.', 'ide-media-switcheroo' );
 			case UPLOAD_ERR_PARTIAL:
-				return __( 'The replacement file was only partially uploaded. Please try again.', 'asset-swap' );
+				return __( 'The replacement file was only partially uploaded. Please try again.', 'ide-media-switcheroo' );
 			case UPLOAD_ERR_NO_FILE:
-				return __( 'Choose a replacement file before submitting.', 'asset-swap' );
+				return __( 'Choose a replacement file before submitting.', 'ide-media-switcheroo' );
 			case UPLOAD_ERR_NO_TMP_DIR:
-				return __( 'The server is missing its temporary upload directory. Contact the hosting provider.', 'asset-swap' );
+				return __( 'The server is missing its temporary upload directory. Contact the hosting provider.', 'ide-media-switcheroo' );
 			case UPLOAD_ERR_CANT_WRITE:
-				return __( 'The server could not write the uploaded file to disk. Contact the hosting provider.', 'asset-swap' );
+				return __( 'The server could not write the uploaded file to disk. Contact the hosting provider.', 'ide-media-switcheroo' );
 			case UPLOAD_ERR_EXTENSION:
-				return __( 'A server extension stopped the upload. Contact the hosting provider.', 'asset-swap' );
+				return __( 'A server extension stopped the upload. Contact the hosting provider.', 'ide-media-switcheroo' );
 			default:
-				return __( 'The replacement file could not be uploaded. Please try again.', 'asset-swap' );
+				return __( 'The replacement file could not be uploaded. Please try again.', 'ide-media-switcheroo' );
 		}
 	}
 

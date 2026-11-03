@@ -23,8 +23,8 @@ final class Admin {
 
 	public function admin_menu(): void {
 		add_media_page(
-			__( 'Asset Swap', 'asset-swap' ),
-			__( 'Asset Swap', 'asset-swap' ),
+			__( 'Media Switcheroo', 'ide-media-switcheroo' ),
+			__( 'Media Switcheroo', 'ide-media-switcheroo' ),
 			'upload_files',
 			'asset-swap',
 			array( $this, 'render_page' )
@@ -32,7 +32,7 @@ final class Admin {
 	}
 
 	public function enqueue_assets( string $hook ): void {
-		// Only the Asset Swap screen uses these files; the Media Library and Attachment Details only get a link.
+		// Only the plugin's own screen uses these files; the Media Library and Attachment Details only get a link.
 		if ( 'media_page_asset-swap' !== $hook ) {
 			return;
 		}
@@ -44,9 +44,9 @@ final class Admin {
 			'assetSwapAdmin',
 			array(
 				'i18n' => array(
-					'chooseTitle'  => __( 'Choose Media to Replace', 'asset-swap' ),
-					'chooseButton' => __( 'Replace This Media', 'asset-swap' ),
-					'replacing'    => __( 'Replacing media…', 'asset-swap' ),
+					'chooseTitle'  => __( 'Choose Media to Replace', 'ide-media-switcheroo' ),
+					'chooseButton' => __( 'Replace This Media', 'ide-media-switcheroo' ),
+					'replacing'    => __( 'Replacing media…', 'ide-media-switcheroo' ),
 				),
 			)
 		);
@@ -64,7 +64,7 @@ final class Admin {
 			),
 			admin_url( 'upload.php' )
 		);
-		$actions['ides_asset_swap'] = '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Replace File', 'asset-swap' ) . '</a>';
+		$actions['ides_asset_swap'] = '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Replace File', 'ide-media-switcheroo' ) . '</a>';
 		return $actions;
 	}
 
@@ -80,16 +80,16 @@ final class Admin {
 			admin_url( 'upload.php' )
 		);
 		$fields['ides_asset_swap_file'] = array(
-			'label' => __( 'Replace File', 'asset-swap' ),
+			'label' => __( 'Replace File', 'ide-media-switcheroo' ),
 			'input' => 'html',
-			'html'  => '<a class="button" href="' . esc_url( $url ) . '">' . esc_html__( 'Replace Media File', 'asset-swap' ) . '</a><p class="description">' . esc_html__( 'Keep this attachment and its existing URL while replacing the underlying file.', 'asset-swap' ) . '</p>',
+			'html'  => '<a class="button" href="' . esc_url( $url ) . '">' . esc_html__( 'Replace Media File', 'ide-media-switcheroo' ) . '</a><p class="description">' . esc_html__( 'Keep this attachment and its existing URL while replacing the underlying file.', 'ide-media-switcheroo' ) . '</p>',
 		);
 		return $fields;
 	}
 
 	public function render_page(): void {
 		if ( ! current_user_can( 'upload_files' ) ) {
-			wp_die( esc_html__( 'You do not have permission to replace media.', 'asset-swap' ) );
+			wp_die( esc_html__( 'You do not have permission to replace media.', 'ide-media-switcheroo' ) );
 		}
 
 		// Choosing which item to show is read-only and permission-checked below, so no nonce is needed.
@@ -110,28 +110,28 @@ final class Admin {
 		<div class="wrap asset-swap-replace-wrap">
 			<div class="asset-swap-replace-hero">
 				<div>
-					<h1><?php esc_html_e( 'Asset Swap', 'asset-swap' ); ?></h1>
-					<p><?php esc_html_e( 'Replace an existing Media Library file without breaking its attachment ID, URL, title, alt text, caption, or references.', 'asset-swap' ); ?></p>
+					<h1><?php esc_html_e( 'Media Switcheroo', 'ide-media-switcheroo' ); ?></h1>
+					<p><?php esc_html_e( 'Replace an existing Media Library file without breaking its attachment ID, URL, title, alt text, caption, or references.', 'ide-media-switcheroo' ); ?></p>
 				</div>
 			</div>
 
 			<?php if ( 'success' === $notice ) : ?>
-				<div class="notice notice-success is-dismissible"><p><strong><?php esc_html_e( 'Media replaced successfully.', 'asset-swap' ); ?></strong><?php if ( $caches ) : ?> <?php /* translators: %s: comma-separated list of caches that were cleared. */ echo esc_html( sprintf( __( 'Caches cleared: %s', 'asset-swap' ), $caches ) ); ?><?php endif; ?></p></div>
+				<div class="notice notice-success is-dismissible"><p><strong><?php esc_html_e( 'Media replaced successfully.', 'ide-media-switcheroo' ); ?></strong><?php if ( $caches ) : ?> <?php /* translators: %s: comma-separated list of caches that were cleared. */ echo esc_html( sprintf( __( 'Caches cleared: %s', 'ide-media-switcheroo' ), $caches ) ); ?><?php endif; ?></p></div>
 			<?php endif; ?>
 
 			<?php if ( ! $attachment_id ) : ?>
 				<div class="asset-swap-replace-card asset-swap-picker-card">
-					<h2><?php esc_html_e( 'Choose Media', 'asset-swap' ); ?></h2>
-					<p><?php esc_html_e( 'Select the Media Library item you want to replace. Images, PDFs, documents, and other WordPress-supported attachment types are supported.', 'asset-swap' ); ?></p>
-					<button type="button" class="button button-primary button-hero" id="asset-swap-select-media"><?php esc_html_e( 'Choose from Media Library', 'asset-swap' ); ?></button>
+					<h2><?php esc_html_e( 'Choose Media', 'ide-media-switcheroo' ); ?></h2>
+					<p><?php esc_html_e( 'Select the Media Library item you want to replace. Images, PDFs, documents, and other WordPress-supported attachment types are supported.', 'ide-media-switcheroo' ); ?></p>
+					<button type="button" class="button button-primary button-hero" id="asset-swap-select-media"><?php esc_html_e( 'Choose from Media Library', 'ide-media-switcheroo' ); ?></button>
 				</div>
 			<?php else : ?>
 				<?php $this->render_replace_form( $attachment_id ); ?>
 			<?php endif; ?>
 
 			<div class="asset-swap-replace-card asset-swap-info-grid">
-				<div><strong><?php esc_html_e( 'Safe Replacement', 'asset-swap' ); ?></strong><p><?php esc_html_e( 'The attachment ID and existing URL stay the same. The replacement must use the same file extension so existing links continue working.', 'asset-swap' ); ?></p></div>
-				<div><strong><?php esc_html_e( 'Automatic Cache Clearing', 'asset-swap' ); ?></strong><p><?php esc_html_e( 'After replacement, WordPress caches are cleared and Asset Swap attempts to purge supported page-cache, hosting, optimization, and builder caches automatically.', 'asset-swap' ); ?></p></div>
+				<div><strong><?php esc_html_e( 'Safe Replacement', 'ide-media-switcheroo' ); ?></strong><p><?php esc_html_e( 'The attachment ID and existing URL stay the same. The replacement must use the same file extension so existing links continue working.', 'ide-media-switcheroo' ); ?></p></div>
+				<div><strong><?php esc_html_e( 'Automatic Cache Clearing', 'ide-media-switcheroo' ); ?></strong><p><?php esc_html_e( 'After replacement, WordPress caches are cleared and the plugin attempts to purge supported page-cache, hosting, optimization, and builder caches automatically.', 'ide-media-switcheroo' ); ?></p></div>
 			</div>
 		</div>
 		<?php
@@ -145,7 +145,7 @@ final class Admin {
 		?>
 		<div class="asset-swap-replace-grid">
 			<div class="asset-swap-replace-card asset-swap-current-card">
-				<h2><?php esc_html_e( 'Current Media', 'asset-swap' ); ?></h2>
+				<h2><?php esc_html_e( 'Current Media', 'ide-media-switcheroo' ); ?></h2>
 				<div class="asset-swap-media-preview">
 					<?php if ( wp_attachment_is_image( $attachment_id ) ) : ?>
 						<?php echo wp_get_attachment_image( $attachment_id, 'medium', false, array( 'class' => 'asset-swap-preview-image' ) ); ?>
@@ -154,29 +154,29 @@ final class Admin {
 					<?php endif; ?>
 				</div>
 				<dl class="asset-swap-file-meta">
-					<div><dt><?php esc_html_e( 'Title', 'asset-swap' ); ?></dt><dd><?php echo esc_html( get_the_title( $attachment_id ) ); ?></dd></div>
-					<div><dt><?php esc_html_e( 'File', 'asset-swap' ); ?></dt><dd><?php echo esc_html( wp_basename( (string) $file ) ); ?></dd></div>
-					<div><dt><?php esc_html_e( 'Type', 'asset-swap' ); ?></dt><dd><?php echo esc_html( get_post_mime_type( $attachment_id ) ); ?></dd></div>
-					<div><dt><?php esc_html_e( 'Required extension', 'asset-swap' ); ?></dt><dd><?php echo esc_html( $ext ); ?></dd></div>
+					<div><dt><?php esc_html_e( 'Title', 'ide-media-switcheroo' ); ?></dt><dd><?php echo esc_html( get_the_title( $attachment_id ) ); ?></dd></div>
+					<div><dt><?php esc_html_e( 'File', 'ide-media-switcheroo' ); ?></dt><dd><?php echo esc_html( wp_basename( (string) $file ) ); ?></dd></div>
+					<div><dt><?php esc_html_e( 'Type', 'ide-media-switcheroo' ); ?></dt><dd><?php echo esc_html( get_post_mime_type( $attachment_id ) ); ?></dd></div>
+					<div><dt><?php esc_html_e( 'Required extension', 'ide-media-switcheroo' ); ?></dt><dd><?php echo esc_html( $ext ); ?></dd></div>
 				</dl>
 			</div>
 
 			<div class="asset-swap-replace-card">
-				<h2><?php esc_html_e( 'Replacement File', 'asset-swap' ); ?></h2>
-				<p><?php esc_html_e( 'Choose the new file. Asset Swap will replace the file in place, regenerate WordPress metadata and thumbnails, and clear caches.', 'asset-swap' ); ?></p>
+				<h2><?php esc_html_e( 'Replacement File', 'ide-media-switcheroo' ); ?></h2>
+				<p><?php esc_html_e( 'Choose the new file. The plugin will replace the file in place, regenerate WordPress metadata and thumbnails, and clear caches.', 'ide-media-switcheroo' ); ?></p>
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data" id="asset-swap-replace-form">
 					<input type="hidden" name="action" value="ides_asset_swap">
 					<input type="hidden" name="attachment_id" value="<?php echo esc_attr( (string) $attachment_id ); ?>">
 					<?php wp_nonce_field( 'ides_asset_swap_' . $attachment_id, 'ides_asset_swap_nonce' ); ?>
 					<label class="asset-swap-dropzone" for="asset-swap-replacement-file">
 						<span class="dashicons dashicons-upload"></span>
-						<strong><?php esc_html_e( 'Choose a replacement file', 'asset-swap' ); ?></strong>
-						<span id="asset-swap-file-name"><?php /* translators: %s: required file extension, for example jpg. */ echo esc_html( sprintf( __( 'Must be a .%s file', 'asset-swap' ), strtolower( $ext ) ) ); ?></span>
+						<strong><?php esc_html_e( 'Choose a replacement file', 'ide-media-switcheroo' ); ?></strong>
+						<span id="asset-swap-file-name"><?php /* translators: %s: required file extension, for example jpg. */ echo esc_html( sprintf( __( 'Must be a .%s file', 'ide-media-switcheroo' ), strtolower( $ext ) ) ); ?></span>
 						<input type="file" id="asset-swap-replacement-file" name="replacement_file" required>
 					</label>
-					<div class="asset-swap-safety-note"><span class="dashicons dashicons-yes-alt"></span><div><strong><?php esc_html_e( 'Your media details stay intact.', 'asset-swap' ); ?></strong><p><?php esc_html_e( 'Attachment ID, URL, title, alt text, caption, description, and existing references are preserved.', 'asset-swap' ); ?></p></div></div>
-					<button type="submit" class="button button-primary button-hero" id="asset-swap-submit-replace"><?php esc_html_e( 'Replace Media', 'asset-swap' ); ?></button>
-					<a class="button button-hero" href="<?php echo esc_url( admin_url( 'upload.php?mode=list' ) ); ?>"><?php esc_html_e( 'Cancel', 'asset-swap' ); ?></a>
+					<div class="asset-swap-safety-note"><span class="dashicons dashicons-yes-alt"></span><div><strong><?php esc_html_e( 'Your media details stay intact.', 'ide-media-switcheroo' ); ?></strong><p><?php esc_html_e( 'Attachment ID, URL, title, alt text, caption, description, and existing references are preserved.', 'ide-media-switcheroo' ); ?></p></div></div>
+					<button type="submit" class="button button-primary button-hero" id="asset-swap-submit-replace"><?php esc_html_e( 'Replace Media', 'ide-media-switcheroo' ); ?></button>
+					<a class="button button-hero" href="<?php echo esc_url( admin_url( 'upload.php?mode=list' ) ); ?>"><?php esc_html_e( 'Cancel', 'ide-media-switcheroo' ); ?></a>
 				</form>
 			</div>
 		</div>
@@ -193,31 +193,31 @@ final class Admin {
 				esc_html(
 					sprintf(
 						/* translators: %s: Maximum request size configured by PHP. */
-						__( 'The upload request was too large for this server. The maximum request size is %s. Choose a smaller file or ask the host to increase post_max_size and upload_max_filesize.', 'asset-swap' ),
+						__( 'The upload request was too large for this server. The maximum request size is %s. Choose a smaller file or ask the host to increase post_max_size and upload_max_filesize.', 'ide-media-switcheroo' ),
 						size_format( wp_max_upload_size() )
 					)
 				),
-				esc_html__( 'Media Replacement Failed', 'asset-swap' ),
+				esc_html__( 'Media Replacement Failed', 'ide-media-switcheroo' ),
 				array( 'back_link' => true )
 			);
 		}
 
 		$attachment_id = isset( $_POST['attachment_id'] ) ? absint( wp_unslash( $_POST['attachment_id'] ) ) : 0;
 		if ( ! $attachment_id || 'attachment' !== get_post_type( $attachment_id ) ) {
-			wp_die( esc_html__( 'The upload request was invalid. Return to the Media Library and try again.', 'asset-swap' ), esc_html__( 'Media Replacement Failed', 'asset-swap' ), array( 'back_link' => true ) );
+			wp_die( esc_html__( 'The upload request was invalid. Return to the Media Library and try again.', 'ide-media-switcheroo' ), esc_html__( 'Media Replacement Failed', 'ide-media-switcheroo' ), array( 'back_link' => true ) );
 		}
 		if ( ! $this->can_replace_attachment( $attachment_id ) ) {
-			wp_die( esc_html__( 'You do not have permission to replace this media item.', 'asset-swap' ) );
+			wp_die( esc_html__( 'You do not have permission to replace this media item.', 'ide-media-switcheroo' ) );
 		}
 		if ( ! isset( $_POST['ides_asset_swap_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['ides_asset_swap_nonce'] ) ), 'ides_asset_swap_' . $attachment_id ) ) {
-			wp_die( esc_html__( 'Your upload session expired. Refresh the Asset Swap page and try again.', 'asset-swap' ), esc_html__( 'Media Replacement Failed', 'asset-swap' ), array( 'back_link' => true ) );
+			wp_die( esc_html__( 'Your upload session expired. Refresh the Media Switcheroo page and try again.', 'ide-media-switcheroo' ), esc_html__( 'Media Replacement Failed', 'ide-media-switcheroo' ), array( 'back_link' => true ) );
 		}
 
 		$upload = isset( $_FILES['replacement_file'] ) && is_array( $_FILES['replacement_file'] ) ? $_FILES['replacement_file'] : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- validated by Replacer using is_uploaded_file() and wp_check_filetype_and_ext().
 		$result = $this->replacer->replace( $attachment_id, $upload );
 
 		if ( is_wp_error( $result ) ) {
-			wp_die( esc_html( $result->get_error_message() ), esc_html__( 'Media Replacement Failed', 'asset-swap' ), array( 'back_link' => true ) );
+			wp_die( esc_html( $result->get_error_message() ), esc_html__( 'Media Replacement Failed', 'ide-media-switcheroo' ), array( 'back_link' => true ) );
 		}
 
 		set_transient(
