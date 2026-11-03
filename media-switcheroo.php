@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       IDE Media Switcheroo
+ * Plugin Name:       Media Switcheroo
  * Plugin URI:        https://idesolutions.io/products/asset-swap/
  * Description:       Safely replace WordPress Media Library files in place, regenerate metadata and thumbnails, and clear caches.
  * Version:           1.0.0
@@ -8,7 +8,7 @@
  * Author URI:        https://idesolutions.io/
  * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       ide-media-switcheroo
+ * Text Domain:       media-switcheroo
  * Requires at least: 6.8
  * Requires PHP:      8.0
  */

@@ -1,4 +1,4 @@
-=== IDE Media Switcheroo ===
+=== Media Switcheroo ===
 Contributors: idesolutions
 Tags: media replace, replace image, replace pdf, media library, cache clear
 Requires at least: 6.8
@@ -12,7 +12,7 @@ Safely replace Media Library files in place, regenerate WordPress metadata and t
 
 == Description ==
 
-IDE Media Switcheroo is a WordPress plugin for replacing files already stored in the Media Library without changing the attachment ID or existing media URL.
+Media Switcheroo is a WordPress plugin for replacing files already stored in the Media Library without changing the attachment ID or existing media URL.
 
 It is designed for common maintenance tasks such as replacing an updated image, PDF, document, download, or other WordPress-supported attachment while keeping existing references intact.
 
@@ -41,8 +41,8 @@ Users who can upload files and edit the media item (or manage the site) can repl
 
 == Installation ==
 
-1. Upload the `ide-media-switcheroo` folder to `/wp-content/plugins/` or install the ZIP through Plugins > Add New > Upload Plugin.
-2. Activate IDE Media Switcheroo.
+1. Upload the `media-switcheroo` folder to `/wp-content/plugins/` or install the ZIP through Plugins > Add New > Upload Plugin.
+2. Activate Media Switcheroo.
 3. Go to Media > Media Switcheroo or use the Replace File action for an existing Media Library item.
 4. Select a replacement file with the same file extension.
 5. Select Replace Media.
