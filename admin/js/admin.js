@@ -1,9 +1,9 @@
 (function ($) {
 	'use strict';
 
-	const i18n = ( window.assetSwapAdmin && window.assetSwapAdmin.i18n ) || {};
+	const i18n = ( window.mediaSwitcherooAdmin && window.mediaSwitcherooAdmin.i18n ) || {};
 	let frame;
-	$('#asset-swap-select-media').on('click', function (event) {
+	$('#media-switcheroo-select-media').on('click', function (event) {
 		event.preventDefault();
 		if (frame) {
 			frame.open();
@@ -23,13 +23,13 @@
 		frame.open();
 	});
 
-	$('#asset-swap-replacement-file').on('change', function () {
+	$('#media-switcheroo-replacement-file').on('change', function () {
 		const name = this.files && this.files[0] ? this.files[0].name : '';
-		if (name) $('#asset-swap-file-name').text(name);
+		if (name) $('#media-switcheroo-file-name').text(name);
 	});
 
-	$('#asset-swap-replace-form').on('submit', function () {
-		const button = $('#asset-swap-submit-replace');
+	$('#media-switcheroo-replace-form').on('submit', function () {
+		const button = $('#media-switcheroo-submit-replace');
 		button.prop('disabled', true).text(i18n.replacing);
 	});
 })(jQuery);

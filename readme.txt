@@ -67,7 +67,7 @@ Yes. WordPress attachment metadata and registered image sizes are regenerated af
 
 = Does it clear caches? =
 
-Yes. The plugin clears the cached data WordPress holds for the replaced file and attempts to purge supported page-cache, hosting, optimization, and builder caches that are detected on the site. It does not flush your whole object cache unless you ask it to. Developers can use the `ides_asset_swap/cache/purge` action to integrate additional cache systems, or return true from the `ides_asset_swap/flush_object_cache` filter to also flush the entire object cache.
+Yes. The plugin clears the cached data WordPress holds for the replaced file and attempts to purge supported page-cache, hosting, optimization, and builder caches that are detected on the site. It does not flush your whole object cache unless you ask it to. Developers can use the `media_switcheroo/cache/purge` action to integrate additional cache systems, or return true from the `media_switcheroo/flush_object_cache` filter to also flush the entire object cache.
 
 = Why does the plugin add a query string to replaced images? =
 
@@ -104,4 +104,4 @@ It removes the replacement version, date, and user values it stored on media ite
 * Clear the replaced file's cached data and purge supported cache plugins, hosting caches, and Elementor generated files.
 * Add a replacement version to public media URLs (including resized images) to defeat stale browser and CDN caches.
 * Replace File actions in the Media Library and Attachment Details.
-* Developer hooks: `ides_asset_swap/replaced`, `ides_asset_swap/cache/purge`, and `ides_asset_swap/flush_object_cache`.
+* Developer hooks: `media_switcheroo/replaced`, `media_switcheroo/cache/purge`, and `media_switcheroo/flush_object_cache`.

@@ -1,5 +1,5 @@
 <?php
-namespace IDESolutions\AssetSwap;
+namespace IDESolutions\MediaSwitcheroo;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -31,7 +31,7 @@ final class Cache_Manager {
 		 * @param bool $flush         Whether to flush everything. Default false.
 		 * @param int  $attachment_id Attachment ID.
 		 */
-		if ( apply_filters( 'ides_asset_swap/flush_object_cache', false, $attachment_id ) && function_exists( 'wp_cache_flush' ) ) {
+		if ( apply_filters( 'media_switcheroo/flush_object_cache', false, $attachment_id ) && function_exists( 'wp_cache_flush' ) ) {
 			try {
 				if ( false !== wp_cache_flush() ) {
 					$purged[] = __( 'WordPress object cache', 'media-switcheroo' );
@@ -109,7 +109,7 @@ final class Cache_Manager {
 			 * @param int    $attachment_id Attachment ID.
 			 * @param string $url           Attachment URL.
 			 */
-			do_action( 'ides_asset_swap/cache/purge', $attachment_id, $url );
+			do_action( 'media_switcheroo/cache/purge', $attachment_id, $url );
 		} catch ( \Throwable $e ) {
 			$this->log_cache_error( 'Custom cache integration', $e );
 		}

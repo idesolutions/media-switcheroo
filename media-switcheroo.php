@@ -13,18 +13,18 @@
  * Requires PHP:      8.0
  */
 
-namespace IDESolutions\AssetSwap;
+namespace IDESolutions\MediaSwitcheroo;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'IDES_ASSET_SWAP_VERSION', '1.0.0' );
-define( 'IDES_ASSET_SWAP_FILE', __FILE__ );
-define( 'IDES_ASSET_SWAP_DIR', plugin_dir_path( __FILE__ ) );
-define( 'IDES_ASSET_SWAP_URL', plugin_dir_url( __FILE__ ) );
+define( 'MEDIA_SWITCHEROO_VERSION', '1.0.0' );
+define( 'MEDIA_SWITCHEROO_FILE', __FILE__ );
+define( 'MEDIA_SWITCHEROO_DIR', plugin_dir_path( __FILE__ ) );
+define( 'MEDIA_SWITCHEROO_URL', plugin_dir_url( __FILE__ ) );
 
-require_once IDES_ASSET_SWAP_DIR . 'includes/class-cache-manager.php';
-require_once IDES_ASSET_SWAP_DIR . 'includes/class-replacer.php';
-require_once IDES_ASSET_SWAP_DIR . 'includes/class-admin.php';
+require_once MEDIA_SWITCHEROO_DIR . 'includes/class-cache-manager.php';
+require_once MEDIA_SWITCHEROO_DIR . 'includes/class-replacer.php';
+require_once MEDIA_SWITCHEROO_DIR . 'includes/class-admin.php';
 
 add_action( 'plugins_loaded', static function () {
 	$admin = new Admin( new Replacer( new Cache_Manager() ) );
